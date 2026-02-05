@@ -15,22 +15,22 @@
 
   <div class="container" id="appContainer">
     <!-- Quiz shown first -->
-    <div id="quizContainer">
+    <div id="quizContainer" aria-live="polite">
       <h1>Answer a few questions</h1>
       <p id="questionText" class="questionText"></p>
-      <div id="options" class="options"></div>
-      <p id="feedback" class="feedback" aria-live="polite"></p>
-      <p id="progress" class="progress"></p>
+      <div id="options" class="options" role="list"></div>
+      <p id="feedback" class="feedback" aria-hidden="false"></p>
+      <p id="progress" class="progress" aria-hidden="false"></p>
     </div>
 
     <!-- Valentine content (hidden until quiz done) -->
     <div id="valentineContainer" style="display:none;">
-      <h1 id="typingText"></h1>
+      <h1 id="typingText" aria-live="polite"></h1>
       <p>I've been wanting to ask you something really special 💖</p>
 
       <div class="buttons">
-        <button id="yesBtn">Yes ❤️</button>
-        <button id="noBtn">No 🙃</button>
+        <button id="yesBtn" type="button">Yes ❤️</button>
+        <button id="noBtn" type="button">No 🙃</button>
       </div>
     </div>
   </div>

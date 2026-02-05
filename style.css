@@ -1,31 +1,128 @@
-/* Re-apply quiz/question styling (non-intrusive) */
+/* Full style: preserves original look and adds quiz + celebration overlays */
+
+/* --- Base (kept identical to final Valentine design) --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  overflow: hidden;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  min-height: 3.5rem;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1.8rem;
+  opacity: 0.95;
+}
+
+/* Buttons wrapper */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* common button styles */
+button {
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Yes button: keep stable, remove hover scale to avoid jitter */
+#yesBtn {
+  background: #ff4d6d;
+  color: white;
+  font-weight: 600;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+#yesBtn:hover {
+  transform: none; /* avoid hover scaling (prevents jitter with JS) */
+}
+
+/* No button: looks like the original and will dodge */
+#noBtn {
+  background: white;
+  color: #ff4d6d;
+  font-weight: 500;
+  position: relative;
+}
+
+/* Floating hearts ambient (original) */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 1.2rem;
+  animation: floatUp 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 0.95; }
+  100% { transform: translateY(-120vh) scale(1.8); opacity: 0; }
+}
+
+/* --- Quiz card & MCQ styling (uses same container look, but non-invasive) --- */
 #quizContainer {
   width: 100%;
   box-sizing: border-box;
   min-height: 260px;
   padding: 1.2rem 1rem;
   border-radius: 16px;
-  /* keep page background/font untouched */
+  /* match container look subtly so it blends with final page */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: inherit;
+  color: #fff;
   z-index: 3;
 }
 
 .questionText {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
   margin: 0;
-  color: inherit; /* use the page's text color */
-  text-shadow: 0 2px 8px rgba(0,0,0,0.35); /* subtle contrast if needed */
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   max-width: 36rem;
   padding: 0 0.75rem;
 }
 
+/* answers stacked vertically */
 .options {
   display: flex;
   flex-direction: column;
@@ -36,6 +133,7 @@
   padding: 0 0.6rem;
 }
 
+/* option buttons: white surface with accent text (readable on gradient) */
 .option-btn {
   display: block;
   width: 100%;
@@ -70,3 +168,108 @@
 
 .feedback { color: #ffd1d9; margin-top: 0.6rem; font-weight:600; text-align:center; }
 .progress { margin-top:0.35rem; color:#ffe8ec; text-align:center; }
+
+/* small shake animation for wrong answer */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+.shake { animation: shake 360ms ease; }
+
+/* --- Emoji popup (correct answer) --- */
+.emoji-pop {
+  position: fixed;
+  transform: translate(-50%, -50%) scale(0.2);
+  font-size: 2.2rem;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  animation: emojiPop 700ms cubic-bezier(.2,.9,.2,1) forwards;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
+}
+
+@keyframes emojiPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  45% {
+    opacity: 1;
+    transform: translate(-50%, -70%) scale(1.5);
+  }
+  75% {
+    transform: translate(-50%, -120%) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -160%) scale(1);
+  }
+}
+
+/* --- Celebration overlays (fixed, non-intrusive) --- */
+
+/* confetti piece */
+.confetti-piece {
+  position: fixed;
+  will-change: transform, opacity;
+  border-radius: 2px;
+  opacity: 1;
+  transform-origin: center;
+  z-index: 9999;
+  pointer-events: none;
+  animation: confettiPop var(--dur) cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes confettiPop {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(var(--r)); opacity: 0; }
+}
+
+/* pop-heart */
+.pop-heart {
+  position: fixed;
+  font-size: 1.6rem;
+  z-index: 9999;
+  pointer-events: none;
+  transform-origin: center;
+  animation: heartPop var(--dur) cubic-bezier(.2,.8,.3,1) forwards;
+  text-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+@keyframes heartPop {
+  0% { transform: translate(0,0) scale(0.2) rotate(0); opacity: 0; }
+  30% { transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) scale(1.35) rotate(-10deg); opacity: 1; }
+  65% { transform: translate(calc(var(--tx) * 0.7), calc(var(--ty) * 0.7)) scale(1) rotate(6deg); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0.9) rotate(20deg); opacity: 0; }
+}
+
+/* popup image centered */
+.popup-image {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  max-width: 78vw;
+  max-height: 68vh;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  z-index: 10001;
+  pointer-events: none;
+  opacity: 0;
+  animation: popupFade 700ms cubic-bezier(.2,.9,.2,1) forwards;
+  object-fit: cover;
+  background: rgba(255,255,255,0.95);
+  padding: 8px;
+}
+@keyframes popupFade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  60% { opacity: 1; transform: translate(-50%, -50%) scale(1.02); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* keep responsive adjustments */
+@media (min-width: 768px) {
+  h1 { font-size: 1.9rem; }
+}
