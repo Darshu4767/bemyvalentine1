@@ -1,80 +1,72 @@
-/* --- Tweaks: remove jitter and party popper styles --- */
-
-/* Remove hover transform on Yes button to prevent jitter;
-   keep a subtle transition for the click scaling applied in JS */
-#yesBtn {
-  background: #ff4d6d;
-  color: white;
-  font-weight: 600;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-}
-#yesBtn:hover {
-  /* removed scale hover to avoid jitter with JS scaling */
-  transform: none;
-}
-
-/* Confetti pieces (burst popper) */
-.confetti-piece {
-  position: absolute;
-  will-change: transform, opacity;
-  border-radius: 2px;
-  opacity: 1;
-  transform-origin: center;
-  z-index: 9999;
-  pointer-events: none;
-  animation: confettiPop var(--dur) cubic-bezier(.2,.7,.3,1) forwards;
+/* Re-apply quiz/question styling (non-intrusive) */
+#quizContainer {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 260px;
+  padding: 1.2rem 1rem;
+  border-radius: 16px;
+  /* keep page background/font untouched */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: inherit;
+  z-index: 3;
 }
 
-/* animate using CSS variables set by JS */
-@keyframes confettiPop {
-  0% {
-    transform: translate(0, 0) rotate(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--r));
-    opacity: 0;
-  }
+.questionText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  color: inherit; /* use the page's text color */
+  text-shadow: 0 2px 8px rgba(0,0,0,0.35); /* subtle contrast if needed */
+  max-width: 36rem;
+  padding: 0 0.75rem;
 }
 
-/* Pop hearts animation */
-.pop-heart {
-  position: absolute;
-  font-size: 1.6rem;
-  z-index: 9999;
-  pointer-events: none;
-  transform-origin: center;
-  animation: heartPop var(--dur) cubic-bezier(.2,.8,.3,1) forwards;
-  text-shadow: 0 6px 12px rgba(0,0,0,0.12);
-}
-@keyframes heartPop {
-  0% {
-    transform: translate(0,0) scale(0.2) rotate(0);
-    opacity: 0;
-  }
-  30% {
-    transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) scale(1.35) rotate(-10deg);
-    opacity: 1;
-  }
-  65% {
-    transform: translate(calc(var(--tx) * 0.7), calc(var(--ty) * 0.7)) scale(1) rotate(6deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx), var(--ty)) scale(0.9) rotate(20deg);
-    opacity: 0;
-  }
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  align-items: center;
+  width: 100%;
+  padding: 0 0.6rem;
 }
 
-/* Keep .heart (ambient floating hearts) style if present earlier; ensure pointer-events none */
-.heart {
-  position: absolute;
-  bottom: -20px;
-  font-size: 1.2rem;
-  animation: floatUp 6s linear infinite;
-  pointer-events: none;
+.option-btn {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,0.95);
+  color: #ff4d6d;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  box-sizing: border-box;
 }
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 0.95; }
-  100% { transform: translateY(-120vh) scale(1.8); opacity: 0; }
+
+.option-btn:hover,
+.option-btn:focus {
+  transform: translateY(-3px);
+  background: #fff;
+  outline: none;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
 }
+
+.option-btn.correct {
+  background: linear-gradient(90deg, #ff758c, #ff4d6d);
+  color: #fff;
+  transform: scale(1.03);
+  box-shadow: 0 14px 36px rgba(255,77,109,0.18);
+}
+
+.feedback { color: #ffd1d9; margin-top: 0.6rem; font-weight:600; text-align:center; }
+.progress { margin-top:0.35rem; color:#ffe8ec; text-align:center; }
