@@ -1,36 +1,37 @@
-/* --- Quiz card & MCQ styles (replace/append these) --- */
+/* --- Quiz: match final page styling --- */
 
+/* make the quiz "card" visually identical to the final .container */
 #quizContainer {
-  /* center content inside the translucent card */
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 260px;
+  padding: 1.2rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15); /* same translucent card */
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: 100%;
-  padding: 1rem 0.5rem;
-  box-sizing: border-box;
-  min-height: 260px;
-  /* subtle dedicated background so the quiz stands out */
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  border-radius: 16px;
+  color: #fff; /* ensure question text is white like final page */
 }
 
-/* Question text styling */
+/* Question text uses same weight/size and is centered */
 .questionText {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
   margin: 0;
-  color: #fff; /* question text color */
+  color: #fff;
   max-width: 36rem;
   padding: 0 0.75rem;
 }
 
-/* Options: stacked vertically, centered, full-width up to max */
+/* Stack answers vertically, full-width inside the card */
 .options {
   display: flex;
-  flex-direction: column; /* ensures one below the other */
+  flex-direction: column;
   gap: 0.6rem;
   margin-top: 0.6rem;
   align-items: center;
@@ -38,41 +39,42 @@
   padding: 0 0.6rem;
 }
 
-/* Option buttons as full-width pills */
+/* Option buttons styled to match final page look but remain readable */
 .option-btn {
-  display: block; /* make each one occupy its own line */
+  display: block;
   width: 100%;
-  max-width: 420px; /* prevents overly wide buttons on large screens */
+  max-width: 420px;
   padding: 0.75rem 1.2rem;
-  border-radius: 999px; /* pill shape */
+  border-radius: 999px; /* pill */
   border: none;
-  background: rgba(255,255,255,0.08);
-  color: #fff; /* option text color */
+  background: rgba(255,255,255,0.95); /* white card buttons so text is visible */
+  color: #ff4d6d; /* match final accent color for text */
   cursor: pointer;
   transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
   text-align: center;
   font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  font-family: inherit;
 }
 
-/* Hover & focus accessibility */
+/* Hover/focus for accessibility and visual polish */
 .option-btn:hover,
 .option-btn:focus {
   transform: translateY(-3px);
-  background: rgba(255,255,255,0.16);
+  background: #fff;
   outline: none;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
 }
 
-/* Correct answer styling (stronger visual feedback) */
+/* Correct answer uses the same pink gradient and white text as the Yes button */
 .option-btn.correct {
   background: linear-gradient(90deg, #ff758c, #ff4d6d);
-  transform: scale(1.03);
   color: #fff;
+  transform: scale(1.03);
   box-shadow: 0 14px 36px rgba(255,77,109,0.18);
 }
 
-/* Feedback & progress centered under options */
+/* Feedback & progress: white/pale pink like final */
 .feedback {
   color: #ffd1d9;
   margin-top: 0.6rem;
@@ -89,7 +91,7 @@
   color: #ffe8ec;
 }
 
-/* small shake animation for wrong answer */
+/* Retain the shake animation for wrong answers */
 @keyframes shake {
   0% { transform: translateX(0); }
   20% { transform: translateX(-6px); }
@@ -100,7 +102,7 @@
 }
 .shake { animation: shake 360ms ease; }
 
-/* --- Emoji popup (kept same) --- */
+/* Emoji popup (kept as before) */
 .emoji-pop {
   position: absolute;
   transform: translate(-50%, -50%) scale(0.2);
