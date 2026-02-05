@@ -1,29 +1,93 @@
-/* --- Quiz-specific styles --- */
-.options {
+/* --- Quiz card & MCQ styles (replace/append these) --- */
+
+#quizContainer {
+  /* center content inside the translucent card */
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  box-sizing: border-box;
+  min-height: 260px;
+  /* subtle dedicated background so the quiz stands out */
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius: 16px;
+}
+
+/* Question text styling */
+.questionText {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  color: #fff; /* question text color */
+  max-width: 36rem;
+  padding: 0 0.75rem;
+}
+
+/* Options: stacked vertically, centered, full-width up to max */
+.options {
+  display: flex;
+  flex-direction: column; /* ensures one below the other */
   gap: 0.6rem;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
+  align-items: center;
+  width: 100%;
+  padding: 0 0.6rem;
 }
 
+/* Option buttons as full-width pills */
 .option-btn {
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
+  display: block; /* make each one occupy its own line */
+  width: 100%;
+  max-width: 420px; /* prevents overly wide buttons on large screens */
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px; /* pill shape */
   border: none;
-  background: rgba(255,255,255,0.12);
-  color: #fff;
+  background: rgba(255,255,255,0.08);
+  color: #fff; /* option text color */
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.12s ease;
-  text-align: left;
-  font-weight: 600;
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
 }
 
-.option-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.18); }
-.option-btn.correct { background: #4caf50aa; transform: scale(1.02); }
+/* Hover & focus accessibility */
+.option-btn:hover,
+.option-btn:focus {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.16);
+  outline: none;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+}
 
-.feedback { color: #ffd1d9; margin-top: 0.75rem; min-height: 1.2rem; font-weight: 600; }
+/* Correct answer styling (stronger visual feedback) */
+.option-btn.correct {
+  background: linear-gradient(90deg, #ff758c, #ff4d6d);
+  transform: scale(1.03);
+  color: #fff;
+  box-shadow: 0 14px 36px rgba(255,77,109,0.18);
+}
 
-.progress { margin-top: 0.5rem; opacity: 0.85; font-size: 0.9rem; }
+/* Feedback & progress centered under options */
+.feedback {
+  color: #ffd1d9;
+  margin-top: 0.6rem;
+  min-height: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.progress {
+  margin-top: 0.35rem;
+  opacity: 0.95;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #ffe8ec;
+}
 
 /* small shake animation for wrong answer */
 @keyframes shake {
@@ -36,7 +100,7 @@
 }
 .shake { animation: shake 360ms ease; }
 
-/* --- Emoji popup --- */
+/* --- Emoji popup (kept same) --- */
 .emoji-pop {
   position: absolute;
   transform: translate(-50%, -50%) scale(0.2);
@@ -65,5 +129,3 @@
     transform: translate(-50%, -160%) scale(1);
   }
 }
-
-/* keep original heart and valentine styles unchanged (they remain earlier in the file) */
