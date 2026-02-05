@@ -109,7 +109,7 @@ function attachValentineInteractions() {
 
     // Immediately replace page with image + final message
     // Edit imagePath and finalText as needed
-    const imagePath = '/images/celebrate.png';
+    const imagePath = '/image.png';
     const finalText = "You make me the happiest person on the planet ❤️";
 
     // Replace the container immediately
