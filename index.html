@@ -13,13 +13,25 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1 id="typingText"></h1>
-    <p>I've been wanting to ask you something really special 💖</p>
+  <div class="container" id="appContainer">
+    <!-- Quiz shown first -->
+    <div id="quizContainer">
+      <h1>Answer a few questions</h1>
+      <p id="questionText" class="questionText"></p>
+      <div id="options" class="options"></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+      <p id="progress" class="progress"></p>
+    </div>
 
-    <div class="buttons">
-      <button id="yesBtn">Yes ❤️</button>
-      <button id="noBtn">No 🙃</button>
+    <!-- Valentine content (hidden until quiz done) -->
+    <div id="valentineContainer" style="display:none;">
+      <h1 id="typingText"></h1>
+      <p>I've been wanting to ask you something really special 💖</p>
+
+      <div class="buttons">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 🙃</button>
+      </div>
     </div>
   </div>
 

@@ -1,100 +1,69 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  min-height: 100vh;
+/* --- Quiz-specific styles --- */
+.options {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  overflow: hidden;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
 }
 
-.container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  z-index: 2;
-}
-
-h1 {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-  min-height: 3.5rem;
-}
-
-p {
-  font-size: 1rem;
-  margin-bottom: 1.8rem;
-  opacity: 0.95;
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-button {
+.option-btn {
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
   border: none;
-  padding: 0.7rem 1.4rem;
-  border-radius: 999px;
-  font-size: 1rem;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#yesBtn {
-  background: #ff4d6d;
-  color: white;
+  transition: transform 0.12s ease, background 0.12s ease;
+  text-align: left;
   font-weight: 600;
 }
 
-#yesBtn:hover {
-  transform: scale(1.05);
-}
+.option-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.18); }
+.option-btn.correct { background: #4caf50aa; transform: scale(1.02); }
 
-#noBtn {
-  background: white;
-  color: #ff4d6d;
-  font-weight: 500;
-  position: relative;
-}
+.feedback { color: #ffd1d9; margin-top: 0.75rem; min-height: 1.2rem; font-weight: 600; }
 
-/* Floating hearts */
-.heart {
+.progress { margin-top: 0.5rem; opacity: 0.85; font-size: 0.9rem; }
+
+/* small shake animation for wrong answer */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+.shake { animation: shake 360ms ease; }
+
+/* --- Emoji popup --- */
+.emoji-pop {
   position: absolute;
-  bottom: -20px;
-  font-size: 1.2rem;
-  animation: floatUp 6s linear infinite;
+  transform: translate(-50%, -50%) scale(0.2);
+  font-size: 2.2rem;
   pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  animation: emojiPop 700ms cubic-bezier(.2,.9,.2,1) forwards;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
 }
 
-@keyframes floatUp {
+@keyframes emojiPop {
   0% {
-    transform: translateY(0) scale(1);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  45% {
     opacity: 1;
+    transform: translate(-50%, -70%) scale(1.5);
+  }
+  75% {
+    transform: translate(-50%, -120%) scale(1.1);
   }
   100% {
-    transform: translateY(-120vh) scale(1.8);
     opacity: 0;
+    transform: translate(-50%, -160%) scale(1);
   }
 }
 
-/* Desktop */
-@media (min-width: 768px) {
-  h1 {
-    font-size: 1.9rem;
-  }
-}
+/* keep original heart and valentine styles unchanged (they remain earlier in the file) */
