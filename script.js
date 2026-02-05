@@ -118,7 +118,7 @@ function attachValentineInteractions() {
     burstConfetti(cx, cy, 60);
     burstHearts(cx, cy, 22);
     // Change this path to your chosen image in the repo or use an external URL
-    showPopupImage('/images/celebrate.png', 2800);
+    showPopupImage('/image.png', 2800);
 
     // If user clicked many times (makes the button big) show final message
     if (newScale > 1.8) {
