@@ -1,159 +1,80 @@
-/* Make page background identical to final Valentine page */
-body {
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  /* keep existing layout rules */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-}
+/* --- Tweaks: remove jitter and party popper styles --- */
 
-/* Ensure the main container style is consistent for both quiz and valentine */
-.container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  z-index: 2; /* above floating hearts */
-}
-
-/* Quiz card should visually match .container (keeps the same look) */
-#quizContainer {
-  width: 100%;
-  box-sizing: border-box;
-  min-height: 260px;
-  padding: 1.2rem 1rem;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.08); /* slightly subtler so it reads well on gradient */
-  backdrop-filter: blur(8px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: #fff;
-  z-index: 3; /* ensure above other decorations */
-}
-
-/* Question visibility and styling */
-.questionText {
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-align: center;
-  margin: 0;
-  color: #fff; /* make question text white and visible */
-  text-shadow: 0 2px 8px rgba(0,0,0,0.45); /* improve contrast on gradient */
-  max-width: 36rem;
-  padding: 0 0.75rem;
-}
-
-/* Answers stacked, full-width within the card */
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-top: 0.6rem;
-  align-items: center;
-  width: 100%;
-  padding: 0 0.6rem;
-}
-
-/* Option buttons: white-ish background with pink text to match final theme */
-.option-btn {
-  display: block;
-  width: 100%;
-  max-width: 420px;
-  padding: 0.75rem 1.2rem;
-  border-radius: 999px;
-  border: none;
-  background: rgba(255,255,255,0.95); /* readable button surface */
-  color: #ff4d6d; /* accent color from final design */
-  cursor: pointer;
-  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
-  text-align: center;
-  font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  font-family: inherit;
-}
-
-/* hover/focus for buttons */
-.option-btn:hover,
-.option-btn:focus {
-  transform: translateY(-3px);
-  background: #fff;
-  outline: none;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
-}
-
-/* Correct answer matches Yes button gradient */
-.option-btn.correct {
-  background: linear-gradient(90deg, #ff758c, #ff4d6d);
-  color: #fff;
-  transform: scale(1.03);
-  box-shadow: 0 14px 36px rgba(255,77,109,0.18);
-}
-
-/* Feedback & progress consistent with final styling */
-.feedback {
-  color: #ffd1d9;
-  margin-top: 0.6rem;
-  min-height: 1.2rem;
+/* Remove hover transform on Yes button to prevent jitter;
+   keep a subtle transition for the click scaling applied in JS */
+#yesBtn {
+  background: #ff4d6d;
+  color: white;
   font-weight: 600;
-  text-align: center;
-  text-shadow: none;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+#yesBtn:hover {
+  /* removed scale hover to avoid jitter with JS scaling */
+  transform: none;
 }
 
-.progress {
-  margin-top: 0.35rem;
-  opacity: 0.95;
-  font-size: 0.9rem;
-  text-align: center;
-  color: #ffe8ec;
-}
-
-/* Keep emoji-pop and shake animations (no change) */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-  100% { transform: translateX(0); }
-}
-.shake { animation: shake 360ms ease; }
-
-.emoji-pop {
+/* Confetti pieces (burst popper) */
+.confetti-piece {
   position: absolute;
-  transform: translate(-50%, -50%) scale(0.2);
-  font-size: 2.2rem;
-  pointer-events: none;
+  will-change: transform, opacity;
+  border-radius: 2px;
+  opacity: 1;
+  transform-origin: center;
   z-index: 9999;
-  opacity: 0;
-  animation: emojiPop 700ms cubic-bezier(.2,.9,.2,1) forwards;
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
+  pointer-events: none;
+  animation: confettiPop var(--dur) cubic-bezier(.2,.7,.3,1) forwards;
 }
 
-@keyframes emojiPop {
+/* animate using CSS variables set by JS */
+@keyframes confettiPop {
   0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
-  45% {
+    transform: translate(0, 0) rotate(0);
     opacity: 1;
-    transform: translate(-50%, -70%) scale(1.5);
-  }
-  75% {
-    transform: translate(-50%, -120%) scale(1.1);
   }
   100% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--r));
     opacity: 0;
-    transform: translate(-50%, -160%) scale(1);
   }
+}
+
+/* Pop hearts animation */
+.pop-heart {
+  position: absolute;
+  font-size: 1.6rem;
+  z-index: 9999;
+  pointer-events: none;
+  transform-origin: center;
+  animation: heartPop var(--dur) cubic-bezier(.2,.8,.3,1) forwards;
+  text-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+@keyframes heartPop {
+  0% {
+    transform: translate(0,0) scale(0.2) rotate(0);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) scale(1.35) rotate(-10deg);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(calc(var(--tx) * 0.7), calc(var(--ty) * 0.7)) scale(1) rotate(6deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0.9) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* Keep .heart (ambient floating hearts) style if present earlier; ensure pointer-events none */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 1.2rem;
+  animation: floatUp 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 0.95; }
+  100% { transform: translateY(-120vh) scale(1.8); opacity: 0; }
 }
