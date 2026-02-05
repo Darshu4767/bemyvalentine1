@@ -236,7 +236,6 @@ function showFinalPageWithImage(imgSrc, finalText) {
     <div id="finalContent" style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
       <img id="finalImage" src="${imgSrc}" alt="celebrate" style="max-width:92%;border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,0.35);" />
       <h1 style="font-size:1.6rem;margin:0;">${finalText}</h1>
-      <p style="opacity:0.95;margin:0.2rem 0 0;font-size:1rem;">You made me the happiest person on the planet ❤️</p>
     </div>
   `;
 }
