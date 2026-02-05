@@ -1,34 +1,60 @@
-/* --- Quiz: match final page styling --- */
+/* Make page background identical to final Valentine page */
+body {
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  /* keep existing layout rules */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
 
-/* make the quiz "card" visually identical to the final .container */
+/* Ensure the main container style is consistent for both quiz and valentine */
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  z-index: 2; /* above floating hearts */
+}
+
+/* Quiz card should visually match .container (keeps the same look) */
 #quizContainer {
   width: 100%;
   box-sizing: border-box;
   min-height: 260px;
   padding: 1.2rem 1rem;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.15); /* same translucent card */
-  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08); /* slightly subtler so it reads well on gradient */
+  backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: #fff; /* ensure question text is white like final page */
+  color: #fff;
+  z-index: 3; /* ensure above other decorations */
 }
 
-/* Question text uses same weight/size and is centered */
+/* Question visibility and styling */
 .questionText {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   text-align: center;
   margin: 0;
-  color: #fff;
+  color: #fff; /* make question text white and visible */
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45); /* improve contrast on gradient */
   max-width: 36rem;
   padding: 0 0.75rem;
 }
 
-/* Stack answers vertically, full-width inside the card */
+/* Answers stacked, full-width within the card */
 .options {
   display: flex;
   flex-direction: column;
@@ -39,16 +65,16 @@
   padding: 0 0.6rem;
 }
 
-/* Option buttons styled to match final page look but remain readable */
+/* Option buttons: white-ish background with pink text to match final theme */
 .option-btn {
   display: block;
   width: 100%;
   max-width: 420px;
   padding: 0.75rem 1.2rem;
-  border-radius: 999px; /* pill */
+  border-radius: 999px;
   border: none;
-  background: rgba(255,255,255,0.95); /* white card buttons so text is visible */
-  color: #ff4d6d; /* match final accent color for text */
+  background: rgba(255,255,255,0.95); /* readable button surface */
+  color: #ff4d6d; /* accent color from final design */
   cursor: pointer;
   transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
   text-align: center;
@@ -57,7 +83,7 @@
   font-family: inherit;
 }
 
-/* Hover/focus for accessibility and visual polish */
+/* hover/focus for buttons */
 .option-btn:hover,
 .option-btn:focus {
   transform: translateY(-3px);
@@ -66,7 +92,7 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.14);
 }
 
-/* Correct answer uses the same pink gradient and white text as the Yes button */
+/* Correct answer matches Yes button gradient */
 .option-btn.correct {
   background: linear-gradient(90deg, #ff758c, #ff4d6d);
   color: #fff;
@@ -74,13 +100,14 @@
   box-shadow: 0 14px 36px rgba(255,77,109,0.18);
 }
 
-/* Feedback & progress: white/pale pink like final */
+/* Feedback & progress consistent with final styling */
 .feedback {
   color: #ffd1d9;
   margin-top: 0.6rem;
   min-height: 1.2rem;
   font-weight: 600;
   text-align: center;
+  text-shadow: none;
 }
 
 .progress {
@@ -91,7 +118,7 @@
   color: #ffe8ec;
 }
 
-/* Retain the shake animation for wrong answers */
+/* Keep emoji-pop and shake animations (no change) */
 @keyframes shake {
   0% { transform: translateX(0); }
   20% { transform: translateX(-6px); }
@@ -102,7 +129,6 @@
 }
 .shake { animation: shake 360ms ease; }
 
-/* Emoji popup (kept as before) */
 .emoji-pop {
   position: absolute;
   transform: translate(-50%, -50%) scale(0.2);
