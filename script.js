@@ -1,8 +1,8 @@
-/* Combined Quiz + Valentine script
+/* Combined Quiz + Valentine script (updated)
    - 5-question MCQ quiz (progress only on correct answers)
    - emoji popup on correct answer
    - reveal Valentine page after quiz completion
-   - Yes: confetti + hearts + center popup image (fixed position overlays)
+   - Yes: immediately replace page with final image + message and trigger confetti/hearts
    - No: dodges on hover/click (doesn't act as a real "No")
 */
 
@@ -50,7 +50,6 @@ function onOptionClick(e) {
   if (selected === correct) {
     btn.classList.add("correct");
     showPopupEmoji(btn);
-    // small delay so the user sees the correct state + popup
     setTimeout(() => {
       currentQuestion++;
       if (currentQuestion < questions.length) {
@@ -103,35 +102,26 @@ function attachValentineInteractions() {
   yesBtn.addEventListener("click", () => {
     // gentle scaling on click
     yesBtn.style.transition = "transform 220ms ease";
-    // increase scale slightly each click
     const currentScale = (yesBtn.dataset.scale ? Number(yesBtn.dataset.scale) : 1);
     const newScale = currentScale + 0.15;
     yesBtn.dataset.scale = newScale;
     yesBtn.style.transform = `scale(${newScale})`;
 
-    // celebratory burst centered on the button
-    const rect = yesBtn.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2 + window.scrollX;
-    const cy = rect.top + rect.height / 2 + window.scrollY;
+    // Immediately replace page with image + final message
+    // Edit imagePath and finalText as needed
+    const imagePath = '/images/celebrate.png';
+    const finalText = "You make me the happiest person on the planet ❤️";
 
-    // confetti, hearts and a popup image (image path editable)
-    burstConfetti(cx, cy, 60);
-    burstHearts(cx, cy, 22);
-    // Change this path to your chosen image in the repo or use an external URL
-    showPopupImage('/image.png', 2800);
+    // Replace the container immediately
+    showFinalPageWithImage(imagePath, finalText);
 
-    // If user clicked many times (makes the button big) show final message
-    if (newScale > 1.8) {
-      // larger celebration
-      burstConfetti(cx, cy, 140);
-      burstHearts(cx, cy, 60);
-      setTimeout(() => {
-        document.querySelector(".container").innerHTML = `
-          <h1>YAYYYY!! 💘🥹</h1>
-          <p>You just made me the happiest person ever ❤️</p>
-        `;
-      }, 900);
-    }
+    // Trigger confetti and hearts from center of viewport (fixed overlays so no layout shift)
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    burstConfetti(cx, cy, 120); // bigger burst for page-level celebration
+    burstHearts(cx, cy, 50);
+
+    // Keep the gentle ambient hearts if desired
   });
 
   // No button: dodges on hover and click; it does not "accept" a No answer.
@@ -189,7 +179,7 @@ function showPopupEmoji(buttonEl) {
   }, 900);
 }
 
-/* ---------------- Celebration helpers (confetti, hearts, popup image) ---------------- */
+/* ---------------- Celebration helpers (confetti, hearts) ---------------- */
 const CONFETTI_COLORS = ["#ff4d6d","#ff758c","#ffd166","#ffb3c6","#ff9fb1","#fff3f5"];
 
 function burstConfetti(cx, cy, count = 40) {
@@ -200,8 +190,8 @@ function burstConfetti(cx, cy, count = 40) {
     el.style.width = w + "px";
     el.style.height = (Math.random() > 0.5 ? w * 0.6 : w) + "px";
     el.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
-    const tx = (Math.random() - 0.5) * (window.innerWidth * 0.6);
-    const ty = - (Math.random() * (window.innerHeight * 0.6) + 80);
+    const tx = (Math.random() - 0.5) * (window.innerWidth * 0.8);
+    const ty = - (Math.random() * (window.innerHeight * 0.7) + 100);
     const rot = Math.floor(Math.random() * 360) + "deg";
     const dur = (Math.random() * 0.9 + 0.9).toFixed(2) + "s";
     el.style.left = cx + "px";
@@ -236,20 +226,19 @@ function burstHearts(cx, cy, count = 12) {
   }
 }
 
-function showPopupImage(src, duration = 2500) {
-  if (!src) return null;
-  const img = document.createElement("img");
-  img.className = "popup-image";
-  img.src = src;
-  img.alt = "celebrate";
-  document.body.appendChild(img);
-  setTimeout(() => {
-    img.style.transition = "opacity 260ms ease, transform 260ms ease";
-    img.style.opacity = "0";
-    img.style.transform = "translate(-50%, -50%) scale(0.96)";
-    setTimeout(() => img.remove(), 300);
-  }, duration);
-  return img;
+/* ---------------- Replace page with final message + image ---------------- */
+function showFinalPageWithImage(imgSrc, finalText) {
+  const container = document.querySelector(".container");
+  if (!container) return;
+
+  // Build final content: image + message
+  container.innerHTML = `
+    <div id="finalContent" style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+      <img id="finalImage" src="${imgSrc}" alt="celebrate" style="max-width:92%;border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,0.35);" />
+      <h1 style="font-size:1.6rem;margin:0;">${finalText}</h1>
+      <p style="opacity:0.95;margin:0.2rem 0 0;font-size:1rem;">You made me the happiest person on the planet ❤️</p>
+    </div>
+  `;
 }
 
 /* End of script.js */
